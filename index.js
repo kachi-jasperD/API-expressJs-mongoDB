@@ -1,6 +1,7 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-// const Product = require("./models/product.model.js");
+
 const app = express();
 const port = 3000;
 
@@ -17,12 +18,10 @@ app.use("/api/products", productRoutes);
 app.use("/api/signup", usersRoutes);
 app.use("/api/login", loginRoutes);
 
-
-
 // Database connection and server start
 mongoose
   .connect(
-    "mongodb+srv://ojasperduruzor_db_user:bJHmIYQ4TFvLrw4B@backenddb.7lyxptc.mongodb.net/API-expressJs-mongoDB?appName=BackendDB"
+    process.env.MONGO_URI,
   )
   .then(() => {
     console.log("Connected to the database!");

@@ -1,4 +1,6 @@
-const SignUp = require("../models/signup.model.js");
+const SignUp = require("../models/user.model.js");
+const bcrypt = require("bcrypt");
+
 
 const getSignUp = async (req, res) => {
   try {
@@ -11,7 +13,16 @@ const getSignUp = async (req, res) => {
 
 const createSignUp = async (req, res) => {
   try {
-    const signUp = await SignUp.create(req.body);
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const signUp = new SignUp({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      username: req.body.username,
+      role: req.body.role,
+      password: hashedPassword,
+    });
+    await signUp.save();
     res.status(201).json(signUp);
   } catch (error) {
     if (error.code === 11000) {
