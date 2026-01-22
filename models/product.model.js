@@ -5,6 +5,9 @@ const ProductSchema = mongoose.Schema(
     name: {
       type: String,
       required: [true, "Name is required"],
+      unique: true,
+      lowercase: true,
+      trim: true,
     },
     description: {
       type: String,
@@ -31,7 +34,7 @@ const ProductSchema = mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Product = mongoose.model("Product", ProductSchema);

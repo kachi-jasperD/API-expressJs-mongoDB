@@ -10,7 +10,14 @@ app.use(express.urlencoded({ extended: false })); // Middleware to parse URL-enc
 
 // Routes
 const productRoutes = require("./routes/product.route.js");
+const usersRoutes = require("./routes/user.route.js");
+const loginRoutes = require("./routes/login.route.js");
+
 app.use("/api/products", productRoutes);
+app.use("/api/signup", usersRoutes);
+app.use("/api/login", loginRoutes);
+
+
 
 // Database connection and server start
 mongoose
