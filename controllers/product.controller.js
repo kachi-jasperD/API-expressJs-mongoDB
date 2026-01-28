@@ -31,8 +31,6 @@ const getProductById = async (req, res) => {
   }
 };
 
-//this was failing through vercel because of double response being sent
-// const createProduct = async (req, res) => {
 //   try {
 //     let imageUrl = null;
 
