@@ -1,5 +1,7 @@
 const Product = require("../models/product.model");
-require("dotenv").config();
+// require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 const cloudinary = require("../config/cloudinary.js");
 
 // const url = cloudinary.url("cld-sample-4", {

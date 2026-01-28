@@ -1,6 +1,9 @@
-require("dotenv").config();
+// require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 const express = require("express");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const app = express();
 const port = 3000;
@@ -13,10 +16,12 @@ app.use(express.urlencoded({ extended: false })); // Middleware to parse URL-enc
 const productRoutes = require("./routes/product.route.js");
 const usersRoutes = require("./routes/user.route.js");
 const loginRoutes = require("./routes/login.route.js");
+const todoRoutes = require("./routes/todo.route.js");
 
 app.use("/api/products", productRoutes);
 app.use("/api/signup", usersRoutes);
 app.use("/api/login", loginRoutes);
+app.use("/api/todo", todoRoutes);
 
 // Database connection and server start
 mongoose
