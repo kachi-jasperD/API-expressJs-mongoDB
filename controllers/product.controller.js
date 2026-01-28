@@ -61,7 +61,8 @@ const createProduct = async (req, res) => {
 
     const product = await Product.create({
       ...req.body,
-      image: imageUrl,
+      imageUrl,
+      Createdby: req.user.email,
     });
 
     res.status(201).json(product);
@@ -72,8 +73,6 @@ const createProduct = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
-
-
 
 //code could have been written like this using promises but the above is more readable
 // const createProduct = async (req, res) => {
@@ -106,11 +105,6 @@ const createProduct = async (req, res) => {
 //     res.status(400).json({ message: error.message });
 //   }
 // };
-
-
-
-
-
 
 const updateProductById = async (req, res) => {
   try {
