@@ -60,74 +60,74 @@ const getProductById = async (req, res) => {
 //   }
 // };
 
-const createProduct = async (req, res) => {
-  try {
-    let imageUrl = null;
-
-    if (req.file) {
-      const result = await cloudinary.uploader.upload(
-        `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`,
-        {
-          folder: "products",
-        },
-      );
-
-      imageUrl = result.secure_url;
-    }
-
-    const product = await Product.create({
-      ...req.body,
-      imageUrl,
-      Createdby: req.user.email,
-    });
-
-    // ✅ RETURN after sending response
-    return res.status(201).json(product);
-  } catch (error) {
-    // ✅ Prevent double response
-    if (res.headersSent) {
-      return;
-    }
-
-    if (error.code === 11000) {
-      return res.status(400).json({ message: "Product already exists" });
-    }
-
-    return res.status(400).json({ message: error.message });
-  }
-};
-
-//code could have been written like this using promises but the above is more readable
 // const createProduct = async (req, res) => {
 //   try {
 //     let imageUrl = null;
 
 //     if (req.file) {
-//       const result = await new Promise((resolve, reject) => {
-//         cloudinary.uploader
-//           .upload_stream({ folder: "products" }, (error, result) => {
-//             if (error) reject(error);
-//             resolve(result);
-//           })
-//           .end(req.file.buffer);
-//       });
+//       const result = await cloudinary.uploader.upload(
+//         `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`,
+//         {
+//           folder: "products",
+//         },
+//       );
 
 //       imageUrl = result.secure_url;
 //     }
 
 //     const product = await Product.create({
 //       ...req.body,
-//       image: imageUrl,
+//       imageUrl,
+//       Createdby: req.user.email,
 //     });
 
-//     res.status(201).json(product);
+//     // ✅ RETURN after sending response
+//     return res.status(201).json(product);
 //   } catch (error) {
+//     // ✅ Prevent double response
+//     if (res.headersSent) {
+//       return;
+//     }
+
 //     if (error.code === 11000) {
 //       return res.status(400).json({ message: "Product already exists" });
 //     }
-//     res.status(400).json({ message: error.message });
+
+//     return res.status(400).json({ message: error.message });
 //   }
 // };
+
+//code could have been written like this using promises but the above is more readable
+const createProduct = async (req, res) => {
+  try {
+    let imageUrl = null;
+
+    if (req.file) {
+      const result = await new Promise((resolve, reject) => {
+        cloudinary.uploader
+          .upload_stream({ folder: "products" }, (error, result) => {
+            if (error) reject(error);
+            resolve(result);
+          })
+          .end(req.file.buffer);
+      });
+
+      imageUrl = result.secure_url;
+    }
+
+    const product = await Product.create({
+      ...req.body,
+      image: imageUrl,
+    });
+
+    res.status(201).json(product);
+  } catch (error) {
+    if (error.code === 11000) {
+      return res.status(400).json({ message: "Product already exists" });
+    }
+    res.status(400).json({ message: error.message });
+  }
+};
 
 const updateProductById = async (req, res) => {
   try {
